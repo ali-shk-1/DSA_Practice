@@ -120,17 +120,45 @@ public:
     }
 };
 
+class Stack{
+public:
+    LinkedList list;
+    void push(int val){
+        Node* newNode=new Node(val);
+        newNode->next=list.head;
+        list.head=newNode;
+    }
+    int pop(){
+        Node* temp=list.head;
+        int val=temp->data;
+        list.head=list.head->next;
+        delete temp;
+        return val;
+    }
+    int peek(){
+        Node* temp=list.head;
+        int val=temp->data;
+        return val;
+    }
+    void display(){
+        struct Node* curr=list.head;
+        while(curr!=nullptr){
+            cout<<curr->data<<" ";
+            curr=curr->next;
+        }
+        cout<<endl;
+    }
+
+    
+    
+};
 
 int main(){
     LinkedList list;
-    list.insert(1);
-    list.insert(2);
-    list.insert(2);
-    list.insert(3); 
-    list.insert(3); 
-    list.insert(3); 
-    list.insert(4);  
-    list.removeDuplicateSorted();
-    list.traverse();
+    Stack stack;
+    stack.push(5);
+    stack.push(7);
+    //cout<< stack.pop()<<endl<<stack.pop()<<endl;
+    stack.display();
     return 0;
 }
