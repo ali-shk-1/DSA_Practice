@@ -3,6 +3,7 @@
 #include<iostream>
 #include <iterator>
 #include <locale>
+#include <ostream>
 #include <random>
 #include <type_traits>
 #include<vector>
@@ -23,20 +24,17 @@ public:
     }
 };
 
-class LinkedList{               //with head and tail also
+class LinkedList{
 public:
     Node* head;
-    Node* tail;
     LinkedList(){
         head=nullptr;
-        tail=nullptr;
     }
-    
-    void insert(int value){     //specifically add at tail
+
+    void insert(int value){
         Node* newNode=new Node(value);
         if (head==nullptr) {
             head=newNode;
-            tail=newNode;
             return;
         }
         
@@ -45,13 +43,12 @@ public:
             temp=temp->next;
         }
         temp->next=newNode;
-        tail=newNode;
     }
 
     void deleteNode(int value){
         if(head==nullptr)
             return;
-
+//d
         //head is to be deleted
         if(head->data==value){
             Node* temp=head;
@@ -123,51 +120,96 @@ public:
         }
     }
 };
-class Queue{
+
+class Stack{
 public:
     LinkedList list;
-    void enqueue(int num){
-        list.insert(num);
+    void push(int val){
+        Node* newNode=new Node(val);
+        newNode->next=list.head;
+        list.head=newNode;
     }
-    int dequeue(){
-        if (list.head==nullptr) {
-            cout<<"Queue Empty"<<endl;
-            return -1;
-        }
+    int pop(){
         Node* temp=list.head;
-        int value=list.head->data;
+        int val=temp->data;
         list.head=list.head->next;
-        if(list.head==nullptr)
-            list.tail=nullptr;
         delete temp;
-        return value;
+        return val;
     }
     int peek(){
-      if (list.head==nullptr) {
-            cout<<"Queue Empty"<<endl;
-            return -1;
-        }
-        return list.head->data;
-    }
-    bool isEmpty(){
-        return list.head==nullptr;
-    }
-    int size(){
-        return list.getLength();
+        Node* temp=list.head;
+        int val=temp->data;
+        return val;
     }
     void display(){
-        list.traverse();
+        struct Node* curr=list.head;
+        while(curr!=nullptr){
+            cout<<curr->data<<" ";
+            curr=curr->next;
+        }
+        cout<<endl;
     }
+
+    
+    
 };
 
 
+class Queue{
+public:
+    Stack s1,s2;
+    void enqueue(int num){
+        s1.push(num);
+    }
+    int dequeue(){
+        if (s1.list.head==nullptr) {
+            while(s1.list.head!=nullptr)
+                s2.push(s1.pop());    
+        }
+        if(s2.list.head==nullptr){
+            cout<<"Queue Empty"<<endl;
+            return -1;
+        }
+        return s2.pop();
+    }
+    int peek(){
+        if(s2.list.head==nullptr){
+            while(s1.list.head!=nullptr)
+                s2.push(s1.pop());
+        }
+        if (s2.list.head==nullptr) {
+            cout<<"Queue Empty"<<endl;
+            return -1;
+        }
+        return s2.peek();
+    }
+    bool isEmpty(){
+        return s1.list.head==nullptr && s2.list.head==nullptr;
+    }
+    int size(){
+        return s1.list.getLength() + s2.list.getLength();
+    }
+    void display(){
+        Node* curr=s2.list.head;
+        while(curr!=nullptr){
+            cout<<curr->data<<" ";
+            curr=curr->next;
+        }
+        vector<int> s1vals=s1.list.getValues();
+        for(int i=(int)s1vals.size()-1;i>=0;i--){
+            cout<<s1vals[i]<<" ";
+        }
+        cout<<endl;
+    }
+};
+
 int main(){
-    LinkedList list;
     Queue q;
     q.enqueue(1);
     q.enqueue(2);
+    q.enqueue(3);
     q.dequeue();
-    q.peek();
     q.display();
+
     return 0;
 }
