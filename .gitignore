@@ -1,4 +1,5 @@
 *
 !.gitignore
 !*.cpp
+!*.sorting_algos
 practice.cpp
