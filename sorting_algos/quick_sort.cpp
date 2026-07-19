@@ -41,4 +41,4 @@ void quickSort(vector<int>& a, int lb, int ub) {
 
     quickSort(a, lb, end - 1);
     quickSort(a, end + 1, ub);
-}
+} 
